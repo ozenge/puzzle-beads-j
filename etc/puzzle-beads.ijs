@@ -1,3 +1,12 @@
+div =: {{([:;[:([:<1:,0:$~-&1)"0[)(u;.1)]}}
+toFloat =: _1&(3!:5)
+fromFloat =: 1&(3!:5)
+atan2 =: ((180%1p1)*[:12&o.j./)"1
+rnd =: [*[:<.0.5+%~
+swap =: {{|.&.((<"_1 x)&{)y}}
+pick =: ([:?#){]
+upto =: <.+([:i.[:>:[:|-)
+
 rc =: ('etc\librlptr.dll ',[)cd]
 (9!:1)6!:14".6!:0'YYYYMMDDhhmmsssss'
 
@@ -24,21 +33,12 @@ DrawLineEx =: {{
 	sp =. Vector2_a s[ep =. Vector2_a e[cp =. Color_a c
 	'wrapped_DrawLineEx n i i f i'rc sp;ep;t;cp
 	memf sp[memf ep[memf cp}}
-IsMouseButtonPressed =: [:>[:{.'IsMouseButtonPressed b i'&rc
-IsMouseButtonDown =: [:>[:{.'IsMouseButtonDown b i'&rc
-IsMouseButtonReleased =: [:>[:{.'IsMouseButtonReleased b i'&rc
-WindowShouldClose =: [:>[:{.'WindowShouldClose b'&rc
-SetTraceLogLevel =: [:>[:{.'SetTraceLogLevel n i'&rc
+IsMouseButtonPressed =: 'IsMouseButtonPressed > b i'&rc
+IsMouseButtonDown =: 'IsMouseButtonDown > b i'&rc
+IsMouseButtonReleased =: 'IsMouseButtonReleased > b i'&rc
+WindowShouldClose =: 'WindowShouldClose > b'&rc
+SetTraceLogLevel =: 'SetTraceLogLevel n i'&rc
 GetMousePosition =: {{Vector2_r'wrapped_GetMousePosition *'rc''}}
-
-div =: {{([:;[:([:<1:,0:$~-&1)"0[)(u;.1)]}}
-toFloat =: _1&(3!:5)
-fromFloat =: 1&(3!:5)
-atan2 =: ((180%1p1)*[:12&o.j./)"1
-rnd =: [*[:<.0.5+%~
-swap =: {{|.&.((<"_1 x)&{)y}}
-pick =: ([:?#){]
-upto =: <.+([:i.[:>:[:|-)
 
 Vector2_r =: {{
 	p =. >{.y
@@ -52,8 +52,7 @@ Vector2_a =: {{
 	p[(fromFloat y)memw p,0 8}}
 C =: 255,~[:(3$256)&#:[:".'16b'&,
 
-w =: 512
-h =: 512
+w =: [h =: 512
 ct =: -:w,h
 ir =: h%8
 
@@ -66,8 +65,7 @@ mix_pz =: {{
 			ci =. ((0&<*.<&(#y))#])(zi-1),zi+1
 			y swap~(zj,~pick ci),:zi,zj
 			else.
-			r =. >pick cr
-			((?#y)&|.)"1&.(r&{)y
+			((?#y)&|.)"1&.((>pick cr)&{)y
 			end.
 		}}
 	mix^:x y
@@ -87,7 +85,7 @@ draw_pz =: {{
 			if. 0>(<i,j){y do. continue. end.
 			rr =. +.r.((1p1%180)*i{x)+j*2p1%{:$y
 			DrawLineEx ct;(ct+rr*ir+rw*>:i);rw;C'000000'
-			DrawCircleV (ct+rr*ir+rw*0.5+i);(-:rw);C cs{~y{~<i,j
+			DrawCircleV(ct+rr*ir+rw*0.5+i);(-:rw);C cs{~y{~<i,j
 			end.
 		DrawCircleV ct;(ir+rw*i);C'ffffff'
 		end.}}
@@ -98,20 +96,18 @@ main =: {{
 	pz =. 500 mix_pz init_pz
 	aa =. 0$~#init_pz
 	ai =. ''
-	a0 =. [ a1 =. 0
+	a0 =. [a1 =. 0
 	while. -.WindowShouldClose'' do.
 		if. IsMouseButtonPressed 0 do.
-			d =. |j./ct-~GetMousePosition''
-			ri =. <.rw%~d-ir
-			if. (0<:ri)*.ri<#pz do.
-				for_i. i.{:$pz do.
-					cc =. ct+(+.r.i*2p1%{:$pz)*ir+rw*0.5+ri
-					if. (-:rw)>:|j./cc-~GetMousePosition'' do.
-						pz =. pz click_pz~ri,i
+			i =. <.rw%~(|j./ct-~GetMousePosition'')-ir
+			if. (0<:i)*.i<#pz do.
+				for_j. i.{:$pz do.
+					if. (-:rw)>:|j./(ct+(+.r.j*2p1%{:$pz)*ir+rw*0.5+i)-~GetMousePosition'' do.
+						pz =. pz click_pz~i,j
 						break.
 						end.
 					end.
-				ai =. ,({{0 1}}`])@.(ri>1)ri
+				ai =. ,({{0 1}}`])@.(i>1)i
 				a0 =. atan2 ct-~GetMousePosition''
 				end.
 			end.
