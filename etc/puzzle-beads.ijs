@@ -68,8 +68,7 @@ mix_pz =: {{
 			((?#y)&|.)"1&.((>pick cr)&{)y
 			end.
 		}}
-	mix^:x y
-	}}
+	mix^:x y}}
 rw =: -:(#init_pz)%~h-+:ir
 cs =: '000000','e6194b','f58231','ffe119','3cb44b','42d4f4','4363d8','911eb4',:'f032e6'
 click_pz =: {{
