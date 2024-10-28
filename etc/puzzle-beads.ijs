@@ -42,7 +42,6 @@ GetMousePosition =: {{Vector2_r'wrapped_GetMousePosition *'rc''}}
 Vector2_r =: {{
 	p =. >{.y
 	r =. toFloat memr p,0 8
-	echo r
 	r[memf p}}
 Color_a =: {{
 	p =. mema 4
