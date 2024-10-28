@@ -1,4 +1,3 @@
-div =: {{([:;[:([:<1:,0:$~-&1)"0[)(u;.1)]}}
 toFloat =: _1&(3!:5)
 fromFloat =: 1&(3!:5)
 atan2 =: ((180%1p1)*[:12&o.j./)"1
@@ -42,7 +41,8 @@ GetMousePosition =: {{Vector2_r'wrapped_GetMousePosition *'rc''}}
 
 Vector2_r =: {{
 	p =. >{.y
-	r =. ,4 4 toFloat div memr p,0 8
+	r =. toFloat memr p,0 8
+	echo r
 	r[memf p}}
 Color_a =: {{
 	p =. mema 4
